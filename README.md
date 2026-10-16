@@ -5,7 +5,6 @@
 ## 在线体验
 
 - Demo：<https://yanyan-ai-order-eval.yanyanyu913.chatgpt.site>
-- 个人简历：<https://yanyan-ai-testing.yanyanyu913.chatgpt.site>
 
 ## 解决的问题
 
@@ -58,4 +57,3 @@ npm run serve
 ## 个人贡献边界
 
 这是根据企业 AI 开单测试与验收经验独立制作的作品集 Demo，并非原生产系统源代码。它展示的是需求抽象、风险分级、Evaluation 设计、测试方法和前端产品表达能力。
-
