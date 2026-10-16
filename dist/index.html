@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="于燕燕的 AI 订单评测实验室：使用模拟数据展示字段级评测、版本对比、风险分级和发布决策。">
+  <title>AI 订单评测实验室｜于燕燕</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="grid-bg" aria-hidden="true"></div>
+  <header class="site-header">
+    <div class="shell nav-wrap">
+      <a class="brand" href="#top" aria-label="返回顶部">
+        <span class="brand-mark">YE</span>
+        <span><strong>AI Order Eval Lab</strong><small>by 于燕燕</small></span>
+      </a>
+      <nav aria-label="主导航">
+        <a href="#dashboard">评测看板</a>
+        <a href="#samples">样本证据</a>
+        <a href="#method">方法设计</a>
+        <a class="nav-button" data-github-link href="#">GitHub 源码</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero shell">
+      <div class="hero-copy">
+        <div class="hero-kicker"><span></span> AI EVALUATION · PRODUCT DECISION</div>
+        <h1>让 AI 质量<br><em>变成发布决策</em></h1>
+        <p class="hero-text">用固定数据集、Ground Truth、字段风险分级和版本回归，把“模型看起来能用”转化为可比较、可解释、可追溯的质量结论。</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#dashboard">进入评测看板</a>
+          <a class="button ghost" href="https://yanyan-ai-testing.yanyanyu913.chatgpt.site" target="_blank" rel="noreferrer">查看个人简历</a>
+        </div>
+        <div class="notice"><strong>数据说明</strong> 所有客户、订单和结果均为模拟数据，不包含真实业务信息。</div>
+      </div>
+      <div class="hero-visual" aria-label="评测链路示意图">
+        <div class="flow-node source"><span>01</span><strong>订单样本</strong><small>PDF · Excel · 图片</small></div>
+        <div class="flow-line"></div>
+        <div class="flow-node model"><span>02</span><strong>版本结果</strong><small>Prompt / Model V1 · V2</small></div>
+        <div class="flow-line"></div>
+        <div class="flow-node decision"><span>03</span><strong>发布决策</strong><small>发布 · 灰度 · 阻断</small></div>
+        <div class="orbit orbit-one"></div>
+        <div class="orbit orbit-two"></div>
+      </div>
+    </section>
+
+    <section class="dashboard-section" id="dashboard">
+      <div class="shell">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Evaluation dashboard</p>
+            <h2>固定数据集评测看板</h2>
+          </div>
+          <div class="version-control">
+            <label for="version-select">查看版本</label>
+            <select id="version-select">
+              <option value="v2">V2 · 优化版本</option>
+              <option value="v1">V1 · 基线版本</option>
+            </select>
+            <button class="download-button" id="download-report" type="button">下载评测报告</button>
+          </div>
+        </div>
+
+        <div class="metrics-grid" id="metrics-grid" aria-live="polite"></div>
+
+        <div class="dashboard-grid">
+          <article class="panel comparison-panel">
+            <div class="panel-head">
+              <div><span class="panel-index">01</span><h3>版本质量对比</h3></div>
+              <span class="panel-note">同一数据集 / 同一口径</span>
+            </div>
+            <div id="comparison-chart" class="comparison-chart"></div>
+          </article>
+
+          <article class="panel decision-panel" id="decision-panel">
+            <div class="panel-head">
+              <div><span class="panel-index">02</span><h3>发布建议</h3></div>
+            </div>
+            <div id="decision-content"></div>
+            <div class="thresholds">
+              <span>高风险准确率 ≥ 95%</span>
+              <span>幻觉数 = 0</span>
+              <span>整单通过率 ≥ 70%</span>
+            </div>
+          </article>
+
+          <article class="panel error-panel">
+            <div class="panel-head">
+              <div><span class="panel-index">03</span><h3>错误分布</h3></div>
+              <span class="panel-note">定位首个变错点</span>
+            </div>
+            <div id="error-chart" class="error-chart"></div>
+          </article>
+
+          <article class="panel review-panel">
+            <div class="panel-head">
+              <div><span class="panel-index">04</span><h3>人工复核队列</h3></div>
+              <span class="panel-note">高风险优先</span>
+            </div>
+            <div id="review-list" class="review-list"></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="samples-section shell" id="samples">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Evidence explorer</p>
+          <h2>样本与字段证据</h2>
+          <p class="section-copy">点击任意样本，查看 Ground Truth、模型输出和字段级错误。评测结论必须可以回到证据。</p>
+        </div>
+        <div class="filters" id="filters" aria-label="样本筛选">
+          <button class="active" data-filter="all">全部</button>
+          <button data-filter="failed">有错误</button>
+          <button data-filter="review">需复核</button>
+          <button data-filter="passed">已通过</button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>样本</th>
+              <th>场景</th>
+              <th>格式 / 页数</th>
+              <th>字段错误</th>
+              <th>高风险错误</th>
+              <th>结果</th>
+            </tr>
+          </thead>
+          <tbody id="sample-table"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="method-section" id="method">
+      <div class="shell">
+        <div class="section-heading light-heading">
+          <div>
+            <p class="eyebrow">Product methodology</p>
+            <h2>不只给分数，还要支持决策</h2>
+          </div>
+          <p class="section-copy">这套方法把产品目标、业务风险、测试证据和版本发布连接起来，展示的不只是代码，还有完整的产品管理思路。</p>
+        </div>
+        <div class="method-grid">
+          <article><span>01</span><h3>建立标准答案</h3><p>固定样本、字段字典和 Ground Truth，使不同版本在同一基线上比较。</p></article>
+          <article><span>02</span><h3>按风险分级</h3><p>产品、物料、数量、用纸和交期单独统计，优先控制生产与交付风险。</p></article>
+          <article><span>03</span><h3>保留字段证据</h3><p>每个错误都能回到样本、预期值和实际值，避免笼统归因“模型不准”。</p></article>
+          <article><span>04</span><h3>形成发布门槛</h3><p>根据高风险准确率、幻觉和整单质量输出发布、灰度或阻断建议。</p></article>
+        </div>
+        <div class="method-quote">
+          <span>核心原则</span>
+          <p>模型负责理解，程序负责校验，数据库提供事实，人负责例外。</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <aside class="detail-drawer" id="detail-drawer" aria-hidden="true" aria-labelledby="detail-title">
+    <button class="drawer-close" id="drawer-close" type="button" aria-label="关闭详情">×</button>
+    <div id="drawer-content"></div>
+  </aside>
+  <div class="drawer-backdrop" id="drawer-backdrop"></div>
+
+  <footer>
+    <div class="shell footer-wrap">
+      <div><strong>于燕燕 · AI 订单评测实验室</strong><p>AI 应用测试 × 企业业务 × 产品交付</p></div>
+      <div class="footer-links"><a data-github-link href="#">GitHub</a><a href="https://yanyan-ai-testing.yanyanyu913.chatgpt.site">个人简历</a><a href="#top">返回顶部</a></div>
+    </div>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
+
